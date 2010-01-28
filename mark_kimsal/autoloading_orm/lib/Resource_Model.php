@@ -7,10 +7,14 @@
  */
 class Evr_Resource_Model {
 
-	public $_tableName  = '';
-	public $_id         = -1;
-	public $_isNew      = TRUE;
-	public $_searchable = FALSE;
+	public $__tableName  = '';
+	public $__id         = -1;
+	public $__isNew      = TRUE;
+	public $__searchable = FALSE;
+	public $__excludes   = array();
+	public $__nuls       = array();
+	public $__bins       = array();
+	public $__uniqs      = array();
 
 	public function __construct($id=-1) {
 		$this->_init();
@@ -33,7 +37,7 @@ class Evr_Resource_Model {
 	public function save() {
 		$mapper = Evr_Resource_Loader::loadMapper();
 		$mapper->save($this, $this->getStorageId());
-		if ($this->_searchable) {
+		if ($this->__searchable) {
 			$indexer = Evr_Resource_Loader::loadIndexer();
 			$indexer->indexAdd($this, $this->getStorageId());
 		}
@@ -55,16 +59,23 @@ class Evr_Resource_Model {
 	 * Return a configured table name, or this class name
 	 */
 	public function getStorageKind() {
-		if ($this->_tableName == '') {
+		if ($this->__tableName == '') {
 			return strtolower(get_class($this));
 		}
-		return $this->_tableName;
+		return $this->__tableName;
 	}
 
 	/**
 	 * return this object's "id"
 	 */
 	public function getStorageId() {
-		return $this->_id;
+		return $this->__id;
+	}
+
+	/**
+	 * set this object's "id"
+	 */
+	public function setStorageId($id) {
+		$this->__id = $id;
 	}
 }
